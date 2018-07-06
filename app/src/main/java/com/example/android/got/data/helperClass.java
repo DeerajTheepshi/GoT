@@ -24,6 +24,7 @@ public class helperClass extends SQLiteOpenHelper {
                 + historytable.C_CUL + " TEXT, "
                 + historytable.C_HOUSE+ " TEXT, "
                 + historytable.C_IMAGE+ " TEXT, "
+                + historytable.code+ " TEXT UNIQUE, "
                 + historytable.C_TITLES + " TEXT ); ";
 
         String query2 = "CREATE TABLE " + searchTable.TABLE_NAME + " ("

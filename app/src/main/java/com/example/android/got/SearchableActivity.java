@@ -170,7 +170,7 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                     if(response.body() !=null) {
                         res = response.body().getData();
                         String cname = res.getName(), sname = res.getSpouse(), hname = res.getHouse(), culName = res.getCulture(),
-                                picUrl = "https://api.got.show/" + res.getImageLink(), titleString = "";
+                                picUrl = "https://api.got.show/" + res.getImageLink(), titleString = "",idOfChar=res.get_id();
                         List<String> title = res.getTiles();
 
                         createAFile();
@@ -204,6 +204,7 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                         val.put(historytable.C_HOUSE, check(hname)? hname:"Not Available");
                         val.put(historytable.C_CUL, check(culName)? culName:"Not Available");
                         val.put(historytable.C_TITLES, !titleString.isEmpty()? titleString:"Not Available");
+                        val.put(historytable.code,idOfChar);
                         val.put(historytable.C_IMAGE, FileName);
                         Uri uri = getContentResolver().insert(historytable.CONTENT_URI, val);
                         if (uri != null)

@@ -23,6 +23,7 @@ public class contractClass implements BaseColumns {
         public final static String C_HOUSE = "House";
         public final static String C_CUL = "Culture";
         public final static String C_TITLES = "Titles";
+        public final static String code = "code";
         public final static String C_IMAGE = "Image";
     }
 

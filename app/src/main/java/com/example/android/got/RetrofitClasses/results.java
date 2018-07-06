@@ -14,6 +14,8 @@ public class results {
     public List<String> titles;
     public String director;
     public String airDate;
+    public String _id;
+    public List<String> locations;
 
 
     public String getName() {
@@ -57,7 +59,15 @@ public class results {
         return  reqDate;
     }
 
-    public results(String name, String imageLink, String spouse, String culture, String house, List<String> titles, String director, String airDate) {
+    public String get_id() {
+        return _id;
+    }
+
+    public List<String> getLocations() {
+        return locations;
+    }
+
+    public results(String name, String imageLink, String spouse, String culture, String house, List<String> titles, String director, String airDate, String _id, List<String> locations) {
 
         this.name = name;
         this.imageLink = imageLink;
@@ -67,5 +77,7 @@ public class results {
         this.titles = titles;
         this.director = director;
         this.airDate = airDate;
+        this._id = _id;
+        this.locations = locations;
     }
 }
