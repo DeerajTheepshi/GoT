@@ -38,8 +38,10 @@ public class customAdapter2 extends ArrayAdapter<String> {
         TextView epNam = (TextView) view.findViewById(R.id.epName);
         TextView dirNam = (TextView) view.findViewById(R.id.directorName);
         TextView relDate = (TextView) view.findViewById(R.id.relDate);
+        TextView season = (TextView) view.findViewById(R.id.season);
 
         epNam.setText(currentResult);
+        season.setVisibility(View.GONE);
         dirNam.setVisibility(View.GONE);
         relDate.setVisibility(View.GONE);
 
