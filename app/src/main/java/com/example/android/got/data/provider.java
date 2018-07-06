@@ -90,7 +90,7 @@ public class provider extends ContentProvider {
             case SEARCH_TABLE:
                 long newID1 = db.insert(searchTable.TABLE_NAME,null,values);
                 if(newID1==-1) {
-                    Toast.makeText(getContext(), "Error Inserting Data into Database", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Data Not entered", Toast.LENGTH_SHORT).show();
                     return null;
                 }
                 getContext().getContentResolver().notifyChange(uri,null);

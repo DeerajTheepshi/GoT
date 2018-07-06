@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.android.got.Api;
-import com.example.android.got.Episodes;
 import com.example.android.got.R;
 import com.example.android.got.RetrofitClasses.EntireBody;
 import com.example.android.got.RetrofitClasses.EntireBody1;
@@ -51,9 +51,11 @@ public class characEpisodeFragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         dataUri = (Uri) getActivity().getIntent().getExtras().get("Data");
         View root = inflater.inflate(R.layout.activity_main, container, false);
+        root.setBackground(null);
         epList = (ListView) root.findViewById(R.id.history);
-        View emptyView = root.findViewById(R.id.emptyView);
-        emptyView.setVisibility(View.GONE);
+        TextView mssg = (TextView)root.findViewById(R.id.mssg);
+        mssg.setText("Not Available");
+        epList.setEmptyView(root.findViewById(R.id.emptyView));
         getLoaderManager().initLoader(0,null,this);
         return root;
     }
@@ -82,20 +84,22 @@ public class characEpisodeFragment extends Fragment implements LoaderManager.Loa
            output.enqueue(new Callback<EntireBody1>() {
                @Override
                public void onResponse(Call<EntireBody1> call, Response<EntireBody1> response) {
-                    List<String> res = response.body().getData().get(0).getLocations();
-                    adapter = new customAdapter2(getActivity(),0,res);
-                    epList.setAdapter(adapter);
-                    loaders.setVisibility(View.GONE);
+                   if(response.body()!=null) {
+                       List<String> res = response.body().getData().get(0).getLocations();
+                       adapter = new customAdapter2(getActivity(), 0, res);
+                       epList.setAdapter(adapter);
+                       loaders.setVisibility(View.GONE);
+                   }
+                   else{
+                       loaders.setVisibility(View.GONE);
+                   }
                }
 
                @Override
                public void onFailure(Call<EntireBody1> call, Throwable t) {
-                    Log.v("1234",t+"");
-                    Log.v("1234","Hi");
+
                }
            });
-
-            Log.v("1234","Heyyyy");
         }
     }
 

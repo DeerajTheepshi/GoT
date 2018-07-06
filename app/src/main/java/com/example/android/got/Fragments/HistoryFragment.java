@@ -81,7 +81,8 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{contractClass.historytable._ID, contractClass.historytable.C_NAME, contractClass.historytable.C_IMAGE};
+        String[] projection = new String[]{contractClass.historytable._ID, contractClass.historytable.C_NAME,
+                contractClass.historytable.C_IMAGE,contractClass.historytable.code};
         return new CursorLoader(getActivity(), contractClass.historytable.CONTENT_URI,projection,null,null,null);
     }
 

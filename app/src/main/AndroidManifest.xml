@@ -10,7 +10,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="GoT - Search History"
+        android:label="Game Of Thrones"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -33,9 +33,6 @@
             <meta-data android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-
-        <activity android:name=".Episodes"
-            android:label="Episodes"/>
 
         <activity android:name=".infoPage"
             android:label="Character Info"/>

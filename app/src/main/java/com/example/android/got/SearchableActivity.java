@@ -3,6 +3,7 @@ package com.example.android.got;
 import android.Manifest;
 import android.app.LoaderManager;
 import android.app.SearchManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.android.got.RetrofitClasses.EntireBody;
 import com.example.android.got.RetrofitClasses.results;
+import com.example.android.got.data.contractClass;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -57,32 +60,15 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
     ImageView characImg;
     String query;
     int status=0;
+    Long id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_result);
+        getSearchResult(getIntent());
 
 
-        if (ActivityCompat.checkSelfPermission(SearchableActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(SearchableActivity.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }else {
-            getSearchResult(getIntent());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 0:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getSearchResult(getIntent());
-                }
-                else{
-                    Toast.makeText(this, "Permission not Granted",Toast.LENGTH_SHORT).show();
-                }
-        }
     }
 
     public void getSearchResult(Intent intent){
@@ -101,6 +87,20 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
 
         }
         getLoaderManager().initLoader(0,null,this);
+
+        Snackbar snackbar  = Snackbar.make(findViewById(R.id.myCoordinatorLayout),"For More Information View History",Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("See", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri dataUri = ContentUris.withAppendedId(contractClass.historytable.CONTENT_URI,id);
+                Intent intent = new Intent(SearchableActivity.this,infoPage.class);
+                intent.putExtra("Data",dataUri);
+                startActivity(intent);
+            }
+        });
+        snackbar.show();
+
+
     }
 
     public boolean check(String spouse){
@@ -134,6 +134,8 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
             houseName.setText(Hname);
             clubName.setText(CLname);
             titleName.setText(Tname);
+
+            id = data.getLong(data.getColumnIndex(historytable._ID));
 
             File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(historytable.C_IMAGE)));
             Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(characImg);
@@ -170,7 +172,7 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                     if(response.body() !=null) {
                         res = response.body().getData();
                         String cname = res.getName(), sname = res.getSpouse(), hname = res.getHouse(), culName = res.getCulture(),
-                                picUrl = "https://api.got.show/" + res.getImageLink(), titleString = "",idOfChar=res.get_id();
+                                picUrl = "https://api.got.show/" + res.getImageLink(), titleString = "",gender=(res.getMale()?"Male":"Female");
                         List<String> title = res.getTiles();
 
                         createAFile();
@@ -182,7 +184,7 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
 
                             @Override
                             public void onError(Exception e) {
-
+                                loaderbar.setVisibility(View.GONE);
                             }
                         });
                         if(check(picUrl)){
@@ -204,22 +206,20 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                         val.put(historytable.C_HOUSE, check(hname)? hname:"Not Available");
                         val.put(historytable.C_CUL, check(culName)? culName:"Not Available");
                         val.put(historytable.C_TITLES, !titleString.isEmpty()? titleString:"Not Available");
-                        val.put(historytable.code,idOfChar);
+                        val.put(historytable.code,gender);
                         val.put(historytable.C_IMAGE, FileName);
                         Uri uri = getContentResolver().insert(historytable.CONTENT_URI, val);
-                        if (uri != null)
-                            Toast.makeText(SearchableActivity.this, "New Entry has been added to: " + uri, Toast.LENGTH_LONG).show();
+
+                        id = ContentUris.parseId(uri);
 
                         ContentValues searchVal = new ContentValues();
                         searchVal.put(searchTable.NAME, cname);
                         searchVal.put(searchTable.DATA, cname);
                         Uri uri1 = getContentResolver().insert(searchTable.CONTENT_URI,searchVal);
-                        if(uri1!=null)
-                            Toast.makeText(SearchableActivity.this, "New Entry has been added to: " + uri1, Toast.LENGTH_SHORT).show();
 
                     }
                     else{
-                        Toast.makeText(SearchableActivity.this,"Sorry, No matching character found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchableActivity.this,"Sorry, No matching character found",Toast.LENGTH_LONG).show();
                         finish();
                     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/backdrop1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -26,6 +26,7 @@
                 android:layout_height="75dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="150dp"
+                android:tint="#000"
                 android:src="@drawable/history_image"
                 android:id="@+id/hisImg"/>
 
@@ -33,8 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/hisImg"
+                android:id="@+id/mssg"
                 android:layout_margin="4dp"
-                android:textColor="#FFFF"
+                android:textColor="#212121"
                 android:layout_centerHorizontal="true"
                 android:textSize="24sp"
                 android:text="Search History Not Available"/>

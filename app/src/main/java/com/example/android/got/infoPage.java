@@ -17,18 +17,19 @@ import android.widget.TextView;
 
 import com.example.android.got.Fragments.PagerAdapter;
 import com.example.android.got.Fragments.PagerAdapter1;
+import com.example.android.got.data.contractClass;
 import com.example.android.got.data.contractClass.historytable;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-public class infoPage extends AppCompatActivity{
+public class infoPage extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    /*Uri dataUri;
-    TextView characName,spouseName,houseName,clubName, titleName;
+    Uri dataUri;
+    /*TextView characName,spouseName,houseName,clubName, titleName;*/
     ImageView characImg;
 
-    @Override
+    /*@Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_page);
@@ -46,25 +47,18 @@ public class infoPage extends AppCompatActivity{
 
         getLoaderManager().initLoader(0,null,this);
 
-    }
+    }*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{historytable._ID,historytable.C_NAME,historytable.C_SPOUSE,
-                historytable.C_HOUSE,historytable.C_CUL,historytable.C_TITLES,historytable.C_IMAGE};
+        String[] projection = new String[]{historytable._ID,historytable.C_IMAGE};
         return new CursorLoader(this, dataUri,projection,null,null,null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(data.moveToFirst()) {
-            characName.setText(data.getString(data.getColumnIndex(historytable.C_NAME)));
-            spouseName.setText(data.getString(data.getColumnIndex(historytable.C_SPOUSE)));
-            houseName.setText(data.getString(data.getColumnIndex(historytable.C_HOUSE)));
-            clubName.setText(data.getString(data.getColumnIndex(historytable.C_CUL)));
-            titleName.setText(data.getString(data.getColumnIndex(historytable.C_TITLES)));
-
-            File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(historytable.C_IMAGE)));
+       if(data.moveToFirst()) {
+            File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(contractClass.historytable.C_IMAGE)));
             Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(characImg);
         }
     }
@@ -72,16 +66,26 @@ public class infoPage extends AppCompatActivity{
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }*/
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_activity);
+        setContentView(R.layout.welcome_activity2);
+        characImg = (ImageView)findViewById(R.id.characArt);
+
+        dataUri = (Uri) getIntent().getExtras().get("Data");
+
+
+        getLoaderManager().initLoader(0,null,this);
+
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter1 adapter = new PagerAdapter1(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
     }
 }

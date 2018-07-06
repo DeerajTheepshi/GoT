@@ -33,6 +33,9 @@ public class customAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView charname = (TextView) view.findViewById(R.id.NameonList);
         ImageView charimg = (ImageView) view.findViewById(R.id.characHomeArt);
+        TextView gender = (TextView) view.findViewById(R.id.GenderonList);
+
+        gender.setText(cursor.getString(cursor.getColumnIndex(historytable.code)));
 
         charname.setText(cursor.getString(cursor.getColumnIndex(historytable.C_NAME)));
 

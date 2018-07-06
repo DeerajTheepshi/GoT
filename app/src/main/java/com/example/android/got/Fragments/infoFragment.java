@@ -45,7 +45,7 @@ public class infoFragment extends Fragment implements LoaderManager.LoaderCallba
         houseName =  (TextView)root.findViewById(R.id.houseInfo);
         clubName = (TextView)root.findViewById(R.id.cultureInfo);
         titleName = (TextView)root.findViewById(R.id.titlesInfo);
-        characImg = (ImageView)root.findViewById(R.id.characArt);
+
 
         getLoaderManager().initLoader(0,null,this);
 
@@ -69,8 +69,7 @@ public class infoFragment extends Fragment implements LoaderManager.LoaderCallba
             clubName.setText(data.getString(data.getColumnIndex(contractClass.historytable.C_CUL)));
             titleName.setText(data.getString(data.getColumnIndex(contractClass.historytable.C_TITLES)));
 
-            File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(contractClass.historytable.C_IMAGE)));
-            Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(characImg);
+
         }
     }
 

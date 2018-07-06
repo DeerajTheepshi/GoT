@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.example.android.got.Api;
-import com.example.android.got.Episodes;
 import com.example.android.got.R;
 import com.example.android.got.RetrofitClasses.results;
 import com.example.android.got.data.customAdapter1;
