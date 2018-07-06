@@ -38,7 +38,9 @@ public class customAdapter1 extends ArrayAdapter<results> {
         TextView epNam = (TextView) view.findViewById(R.id.epName);
         TextView dirNam = (TextView) view.findViewById(R.id.directorName);
         TextView relDate = (TextView) view.findViewById(R.id.relDate);
+        TextView season = (TextView) view.findViewById(R.id.season);
 
+        season.setText("Season : "+currentResult.getSeason());
         epNam.setText(currentResult.getName());
         dirNam.setText(currentResult.getDirector());
         relDate.setText(currentResult.getAirDate());
