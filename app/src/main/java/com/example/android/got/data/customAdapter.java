@@ -3,6 +3,7 @@ package com.example.android.got.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.android.got.TransformCircle;
 import com.example.android.got.data.contractClass.historytable;
 
 import com.example.android.got.R;
+import com.example.android.got.fileExists;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -31,15 +33,19 @@ public class customAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView charname = (TextView) view.findViewById(R.id.NameonList);
-        ImageView charimg = (ImageView) view.findViewById(R.id.characHomeArt);
+        TextView charName = (TextView) view.findViewById(R.id.NameonList);
+        ImageView characImg = (ImageView) view.findViewById(R.id.characHomeArt);
         TextView gender = (TextView) view.findViewById(R.id.GenderonList);
 
         gender.setText(cursor.getString(cursor.getColumnIndex(historytable.code)));
 
-        charname.setText(cursor.getString(cursor.getColumnIndex(historytable.C_NAME)));
+        String Cname = cursor.getString(cursor.getColumnIndex(historytable.C_NAME));
+        charName.setText(Cname);
 
-        File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+cursor.getString(cursor.getColumnIndex(historytable.C_IMAGE)));
-        Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(charimg);
+        File imageUri = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).getPath()+"/GOT/"+cursor.getString(cursor.getColumnIndex(historytable.C_IMAGE)));
+        long id = cursor.getLong(cursor.getColumnIndex(historytable._ID));
+        fileExists checkingExistance = new fileExists(imageUri,Cname,characImg,context,id);
+        checkingExistance.fileReDownload();
     }
 }

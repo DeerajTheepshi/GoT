@@ -137,8 +137,10 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
 
             id = data.getLong(data.getColumnIndex(historytable._ID));
 
-            File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(historytable.C_IMAGE)));
-            Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(characImg);
+            File imageUri = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES).getPath()+"/GOT/"+data.getString(data.getColumnIndex(historytable.C_IMAGE)));
+            fileExists checkingExistance = new fileExists(imageUri,Cname,characImg,this,id);
+            checkingExistance.fileReDownload();
             status = 1;
         }
 
@@ -255,7 +257,12 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        File image = new File(Environment.getExternalStorageDirectory().getPath()+"/"+FileName);
+                        File directory = new File(Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES).getPath()+"/GOT");
+                        File image = new File(Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES).getPath()+"/GOT/"+FileName);
+                        if(!directory.exists())
+                            directory.mkdir();
                         Log.v("1234",image+"");
                         try {
                             image.createNewFile();

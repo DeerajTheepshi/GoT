@@ -51,15 +51,19 @@ public class infoPage extends AppCompatActivity implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{historytable._ID,historytable.C_IMAGE};
+        String[] projection = new String[]{historytable._ID,historytable.C_IMAGE,historytable.C_NAME};
         return new CursorLoader(this, dataUri,projection,null,null,null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
        if(data.moveToFirst()) {
-            File imageUri = new File(Environment.getExternalStorageDirectory().getPath()+"/"+data.getString(data.getColumnIndex(contractClass.historytable.C_IMAGE)));
-            Picasso.get().load(imageUri).placeholder(R.drawable.miss_image).transform(new TransformCircle()).into(characImg);
+           String Cname = data.getString(data.getColumnIndex(historytable.C_NAME));long id = data.getLong(data.getColumnIndex(historytable._ID));
+           File imageUri = new File(Environment.getExternalStoragePublicDirectory(
+                   Environment.DIRECTORY_PICTURES).getPath()+"/GOT/"+data.getString(data.getColumnIndex(contractClass.historytable.C_IMAGE)));
+           fileExists checkingExistance = new fileExists(imageUri,Cname,characImg,this,id);
+           checkingExistance.fileReDownload();
+
         }
     }
 
